@@ -37,10 +37,11 @@ export default function CustomizedTables() {
       <Table >
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">name</StyledTableCell>
-            <StyledTableCell align="center">model</StyledTableCell>
-            <StyledTableCell align="center">price</StyledTableCell>
-            <StyledTableCell align="center">quantity</StyledTableCell>
+            <StyledTableCell align="center">firstName</StyledTableCell>
+            <StyledTableCell align="center">lastName</StyledTableCell>
+            <StyledTableCell align="center">email</StyledTableCell>
+            <StyledTableCell align="center">password</StyledTableCell>
+            <StyledTableCell align="center">Operation</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,12 +50,16 @@ export default function CustomizedTables() {
               <StyledTableCell align="center">q</StyledTableCell>
               <StyledTableCell align="center">q</StyledTableCell>
               <StyledTableCell align="center">q</StyledTableCell>
+              <StyledTableCell align="center">
+                <Button variant="contained" sx={{backgroundColor:"red", margin:"10px"}}>delete</Button>
+                <Button variant="contained" sx={{backgroundColor:"green"}}>Edit</Button>
+              </StyledTableCell>
             </StyledTableRow>
         </TableBody>
       </Table>
     </TableContainer>
     <Link to={'/insert'}><Button variant="contained" sx={{marginTop:"100px"}}fullWidth>
-      Edit
+      INSERT
       </Button></Link>
     </>
   );
