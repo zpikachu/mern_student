@@ -1,36 +1,38 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import {Link }from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-
+import Axios from 'axios'
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = changed
-    console.log(data);
+  const [studentInfo,setStudentInfo]=useState('');
+  const handleChange = (e)=>{
+    setStudentInfo({...studentInfo,[e.target.name]:e.target.value})
   };
 
-  const [changed,setChanged]=useState()
-
-  const handleChange = (e)=>{
-    setChanged({...changed,[e.target.name]:e.target.value})
-  }
+  const handleSubmit = (event) => {
+    Axios.post('http://localhost:7000/api/student/insertStudent',studentInfo)
+    .then((response)=>{
+      console.log(response);
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+
+        <ThemeProvider theme={defaultTheme}> 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -41,22 +43,19 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Insert new Student
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box  sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="fname"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="Name"
+                  label="Name"
                   autoFocus
                   onChange={handleChange}
                 />
@@ -65,9 +64,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="contact"
+                  label="Contact"
+                  name="fcontact"
                   autoComplete="family-name"
                   onChange={handleChange}
                 />
@@ -78,7 +77,7 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
+                  name="femail"
                   autoComplete="email"
                   onChange={handleChange}
                 />
@@ -87,11 +86,26 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  name="faddress"
+                  label="Address"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="fclass"
+                  label="Class"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="fdivision"
+                  label="Division"
                   onChange={handleChange}
                 />
               </Grid>
@@ -101,8 +115,9 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3,}}
+              onClick={handleSubmit}
             >
-              Sign Up
+              insert
             </Button>
             <Link to={'/'}>
             <Button
@@ -119,5 +134,7 @@ export default function SignUp() {
         </Box>
       </Container>
     </ThemeProvider>
+
+
   );
 }
