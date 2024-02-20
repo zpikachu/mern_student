@@ -6,7 +6,7 @@ const StudentSchema = new Schema({
     phone: { type: String },
     email: { type: String },
     address: { type: String },
-    class: { type: String },
+    Class: { type: String },
     division: { type: String },
 });
 

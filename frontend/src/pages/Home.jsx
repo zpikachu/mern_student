@@ -8,7 +8,7 @@ export default function Home() {
       <h1 style={{textAlign:"center"}}>Student Information</h1>
       <Table/>
       <Link to={'/student_form'}>
-        <Button variant="contained" sx={{marginTop:"100px"}}fullWidth>
+        <Button variant="contained" fullWidth>
       insert
         </Button>
       </Link>

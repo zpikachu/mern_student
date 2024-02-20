@@ -3,13 +3,13 @@ const StudentSchema = require("../Models/Student_Schema");
 const InsertStudent = async(req, res) => {
     console.log(req.body);
     try {
-        const { fname, fcontact, femail, faddress, fclass, fdivision } = req.body;
+        const { fname, fphone, femail, faddress, fclass, fdivision } = req.body;
         const newStudent = new StudentSchema({
             name: fname,
-            phone: fcontact,
+            phone: fphone,
             email: femail,
             address: faddress,
-            class: fclass,
+            Class: fclass,
             division: fdivision,
         });
         console.log(newStudent);
@@ -47,32 +47,32 @@ const UpdateStudent = async(req, res) => {
     let student = await StudentSchema.findById(req.params.id);
     if (!student) {
         console.log("student not found with this id!");
-        res.json({ message: "student not found with" + req.params.id + "id!" });
+        res.json({ message: "student not found with" + req.params._id + "id!" });
     } else {
-        const { fname, fcontact, femail, faddress, fclass, fdivision } = req.body;
+        const { name, phone, email, address, Class, division } = req.body;
         let updatedStudent = {};
-        if (fname) {
-            updatedStudent.firstName = fname;
+        if (name) {
+            updatedStudent.name = name;
         }
-        if (fcontact) {
-            updatedStudent.lastName = fcontact;
+        if (phone) {
+            updatedStudent.phone = phone;
         }
-        if (femail) {
-            updatedStudent.email = femail;
+        if (email) {
+            updatedStudent.email = email;
         }
-        if (faddress) {
-            updatedStudent.address = faddress;
+        if (address) {
+            updatedStudent.address = address;
         }
-        if (fclass) {
-            updatedStudent.class = fclass;
+        if (Class) {
+            updatedStudent.Class = Class;
         }
-        if (fdivision) {
-            updatedStudent.division = fdivision;
+        if (division) {
+            updatedStudent.division = division;
         }
         await StudentSchema.findByIdAndUpdate(
             req.params.id, { $set: updatedStudent }, { new: true }
         );
-        console.log("student info update successfully");
+        console.log("student info update successful")
         res.json({
             message: "student info update successful",
             updatedStudent: student,

@@ -8,30 +8,31 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
 import Axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({selectStudent,setSelectStudent}) {
+
   const navigate =useNavigate();
-  const [studentInfo,setStudentInfo]=useState('');
-  const handleChange = (e)=>{
-    setStudentInfo({...studentInfo,[e.target.name]:e.target.value})
-  };
+
+    const handleChange = (event)=>{
+        setSelectStudent({...selectStudent,[event.target.name]:event.target.value});
+      };
+
 
   const handleSubmit = () => {
-    Axios.post('http://localhost:7000/api/student/insertStudent',studentInfo)
+    Axios.put(`http://localhost:7000/api/student/updateStudent/${selectStudent?._id}`,selectStudent)
     .then(async(response)=>{
-      console.log(response);
-      await navigate("/");
+        await navigate("/");
     })
     .catch((error)=>{
-      console.log(error);
-    });
+        console.log(error)
+    })
   };
 
   return (
@@ -48,26 +49,28 @@ export default function SignUp() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Insert new Student
+          Update Student
           </Typography>
           <Box  sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="fname"
+                  name="name"
                   required
                   fullWidth
                   label="Name"
                   onChange={handleChange}
+                  value={selectStudent?.name}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  label="phone"
-                  name="fphone"
+                  label="Phone"
+                  name="phone"
                   onChange={handleChange}
+                  value={selectStudent?.phone}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -75,35 +78,39 @@ export default function SignUp() {
                   required
                   fullWidth
                   label="Email Address"
-                  name="femail"
+                  name="email"
                   onChange={handleChange}
+                  value={selectStudent?.email}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="faddress"
+                  name="address"
                   label="Address"
                   onChange={handleChange}
+                  value={selectStudent?.address}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="fclass"
+                  name="Class"
                   label="Class"
                   onChange={handleChange}
+                  value={selectStudent?.Class}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="fdivision"
+                  name="division"
                   label="Division"
                   onChange={handleChange}
+                  value={selectStudent?.division}
                 />
               </Grid>
             </Grid>
@@ -114,7 +121,7 @@ export default function SignUp() {
               sx={{ mt: 3,}}
               onClick={handleSubmit}
             >
-              insert
+              Update
             </Button>
             <Link to={'/'}>
             <Button
