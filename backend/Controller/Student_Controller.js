@@ -4,11 +4,13 @@ const InsertStudent = async(req, res) => {
     console.log(req.body);
     try {
         const { fname, fphone, femail, faddress, fclass, fdivision } = req.body;
+        const profile = req.file.filename;
         const newStudent = new StudentSchema({
             name: fname,
             phone: fphone,
             email: femail,
             address: faddress,
+            profile,
             Class: fclass,
             division: fdivision,
         });
@@ -49,7 +51,10 @@ const UpdateStudent = async(req, res) => {
         console.log("student not found with this id!");
         res.json({ message: "student not found with" + req.params._id + "id!" });
     } else {
+        console.log(req.body);
         const { name, phone, email, address, Class, division } = req.body;
+        // const profile = req.file.filename;
+
         let updatedStudent = {};
         if (name) {
             updatedStudent.name = name;
@@ -63,6 +68,9 @@ const UpdateStudent = async(req, res) => {
         if (address) {
             updatedStudent.address = address;
         }
+        // if (profile) {
+        //     updatedStudent.profile = profile;
+        // }
         if (Class) {
             updatedStudent.Class = Class;
         }

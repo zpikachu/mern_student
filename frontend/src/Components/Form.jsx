@@ -19,12 +19,26 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const navigate =useNavigate();
   const [studentInfo,setStudentInfo]=useState('');
+  const [studentProfile,setStudentProfilePic]=useState(null);
   const handleChange = (e)=>{
     setStudentInfo({...studentInfo,[e.target.name]:e.target.value})
   };
 
+  const handleFileChange=(e)=>{
+    setStudentProfilePic(e.target.files[0]);
+  }
+  console.log(studentInfo)
+  console.log(studentProfile)
   const handleSubmit = () => {
-    Axios.post('http://localhost:7000/api/student/insertStudent',studentInfo)
+    const formData =new FormData();
+    formData.append("fname",studentInfo.fname);
+    formData.append("fphone",studentInfo.fphone);
+    formData.append("femail",studentInfo.femail);
+    formData.append("faddress",studentInfo.faddress);
+    formData.append("fprofile",studentProfile);
+    formData.append("fclass",studentInfo.fclass);
+    formData.append("fdivision",studentInfo.fdivision);
+    Axios.post('http://localhost:7000/api/student/insertStudent',formData)
     .then(async(response)=>{
       console.log(response);
       await navigate("/");
@@ -33,6 +47,8 @@ export default function SignUp() {
       console.log(error);
     });
   };
+
+ 
 
   return (
 
@@ -86,6 +102,15 @@ export default function SignUp() {
                   name="faddress"
                   label="Address"
                   onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                type='file'
+                  fullWidth
+                  name="fprofile"
+                  label="Profile pic"
+                  onChange={handleFileChange}
                 />
               </Grid>
               <Grid item xs={12}>

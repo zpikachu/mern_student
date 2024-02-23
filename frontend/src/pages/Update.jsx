@@ -6,7 +6,15 @@ export default function Update() {
 
     let params = useParams();
     let UserId = params.id;
-    const [selectStudent, setSelectStudent] = useState({name:'',phone:'',email:'',address:'',Class:'',division:''}); // Initialize with null instead of an empty object
+    const [selectStudent, setSelectStudent] = useState(null);
+
+    
+    const handleChange = (event)=>{
+      setSelectStudent({...selectStudent,[event.target.name]:event.target.value});
+    };
+
+
+
 
     useEffect(() => {
         Axios.get(`http://localhost:7000/api/student/getSingleStudent/${UserId}`)
@@ -19,7 +27,10 @@ export default function Update() {
     }, [UserId]); 
   return (
     <div>
-      <Updateform selectStudent={selectStudent} setSelectStudent={setSelectStudent}/>
+      <Updateform 
+      selectStudent={selectStudent}
+      handleChange={handleChange}
+      />
     </div>
   );
 }

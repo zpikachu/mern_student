@@ -16,6 +16,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {Link} from 'react-router-dom'
+
+
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -74,13 +80,20 @@ export default function CustomizedTables() {
 const [student,setStudent]=useState([]);
 const [selectStudent,setSelectStudent]=useState(null);
 const [count,setCount]=useState(true);
-
 const [open, setOpen] = React.useState(false);
+const [selectedStudentForView, setSelectedStudentForView] = useState(null);
+
+
 const handleOpen = (student) => {
   setOpen(true);
   setSelectStudent(student);
 }
 const handleClose = () => setOpen(false);
+
+const handleView = (student) => {
+  setSelectedStudentForView(student);
+};
+
 
 useEffect(()=>{
   Axios.get('http://localhost:7000/api/student/getAllStudents')
@@ -113,11 +126,13 @@ const handleDelete= async()=>{
         <TableHead>
           <TableRow>
             <StyledTableCell>SL NO</StyledTableCell>
+          <StyledTableCell align="left">Profile</StyledTableCell>
             <StyledTableCell align="left">Student Name</StyledTableCell>
             <StyledTableCell align="left">Email</StyledTableCell>
             <StyledTableCell align="left">Phone</StyledTableCell>
             <StyledTableCell align="left">Address</StyledTableCell>
             <StyledTableCell align="left">Class-Division</StyledTableCell>
+            <StyledTableCell align="left">view</StyledTableCell>
             <StyledTableCell align="left">Operation</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -126,11 +141,18 @@ const handleDelete= async()=>{
            student.map((row,index)=>(
           <StyledTableRow key={index+1}>
           <StyledTableCell component="th" scope='row'>{index+1}</StyledTableCell>
+          <StyledTableCell align="left">
+            <img src={`http://localhost:7000/uploads/student/${row.profile}`} 
+            alt={row.name} 
+            style={{height:"40px",width:"40px",borderRadius:"50%"}}
+            />
+            </StyledTableCell>
           <StyledTableCell align="left">{row.name}</StyledTableCell>
           <StyledTableCell align="left">{row.email}</StyledTableCell>
           <StyledTableCell align="left">{row.phone}</StyledTableCell>
           <StyledTableCell align="left">{row.address}</StyledTableCell>
           <StyledTableCell align="left">{row.Class}-{row.division}</StyledTableCell>
+          <StyledTableCell align="left" onClick={() => handleView(row)} >view</StyledTableCell>
           <StyledTableCell align="left">
           <Link to={`/update/${row._id}`}>
           <EditIcon sx={EIS} />
@@ -164,6 +186,46 @@ const handleDelete= async()=>{
         </Box>
       </Modal>
     </div>
+    <div>
+  <Modal
+    open={selectedStudentForView !== null}
+    onClose={() => setSelectedStudentForView(null)}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            component="img"
+            height="140px"
+            image={`http://localhost:7000/uploads/student/${selectedStudentForView?.profile}`}
+            alt={selectedStudentForView?.name}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {selectedStudentForView?.name}
+            </Typography>
+            <Typography variant="body2" color="gray">
+              <strong>Email:</strong> {selectedStudentForView?.email}
+              <br />
+              <strong>Phone:</strong> {selectedStudentForView?.phone}
+              <br />
+              <strong>Address:</strong> {selectedStudentForView?.address}
+              <br />
+              <strong>Class:</strong> {selectedStudentForView?.Class}
+              <br />
+              <strong>Division:</strong> {selectedStudentForView?.division}
+              <br />
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
+  </Modal>
+</div>
+
+
 </>
   );
 }

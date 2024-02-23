@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React  from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,25 +9,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Axios from 'axios'
+// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignUp({selectStudent,setSelectStudent}) {
+export default function SignUp({handleChange, selectStudent}) {
 
   const navigate =useNavigate();
 
-    const handleChange = (event)=>{
-        setSelectStudent({...selectStudent,[event.target.name]:event.target.value});
-      };
-
 
   const handleSubmit = () => {
+
     Axios.put(`http://localhost:7000/api/student/updateStudent/${selectStudent?._id}`,selectStudent)
     .then(async(response)=>{
+      console.log(response)
         await navigate("/");
     })
     .catch((error)=>{
@@ -93,6 +91,15 @@ export default function SignUp({selectStudent,setSelectStudent}) {
                   value={selectStudent?.address}
                 />
               </Grid>
+              {/* <Grid item xs={12}>
+                <TextField
+                type='file'
+                  fullWidth
+                  name="profile"
+                  label="Profile pic"
+                  onChange={}
+                />
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   required

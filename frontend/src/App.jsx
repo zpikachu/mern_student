@@ -4,6 +4,7 @@ import {BrowserRouter,  Route, Routes } from 'react-router-dom'
 import Home from './pages/Home';
 import StudentForm from './pages/StudentForm'
 import UpdateForm from './pages/Update'
+
 function App() {
   return (
     <div>
